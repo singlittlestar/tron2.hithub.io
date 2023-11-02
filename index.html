@@ -18,7 +18,7 @@
 </head>
 
 <body>
-<button onclick="getConnect()">链接钱包</button>
+<button id="connectButton">链接钱包</button>
 <script src="js/vendor/modernizr-3.11.2.min.js"></script>
 <script src="js/plugins.js"></script>
 <script src="js/main.js"></script>
@@ -39,10 +39,9 @@
   import QRCodeModal from "@walletconnect/qrcode-modal";
 
   const connector = new WalletConnect({
-    bridge: "https://bridge.walletconnect.org", // Required
+    bridge: "https://bridge.walletconnect.org",
     qrcodeModal: QRCodeModal,
   });
-
 
   if (!connector.connected) {
     connector.createSession();
@@ -68,11 +67,11 @@
     }
   });
 
-  const request = connector._formatRequest({
-    method: "get_accounts",
-  });
+  async function getConnect() {
+    const request = connector._formatRequest({
+      method: "get_accounts",
+    });
 
-  function getConnect(){
     connector._sendCallRequest(request)
       .then((result) => {
         alert(result)
@@ -81,6 +80,12 @@
         alert(error)
       });
   }
+  // 获取按钮元素
+  const connectButton = document.getElementById("connectButton");
+
+  // 添加点击事件监听器，调用 getConnect 函数
+  connectButton.addEventListener("click", getConnect);
+
 </script>
 
 </body>
